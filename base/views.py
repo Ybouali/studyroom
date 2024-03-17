@@ -1,8 +1,9 @@
 from django.http import HttpResponse
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from base.forms import RoomForm
-from base.models import Room
+from base.models import Room, Topic
 
 # rooms = [
 #     {'id': 1, 'name': 'Lets learn python'},
@@ -13,9 +14,17 @@ from base.models import Room
 
 def home(request):
 
-    rooms = Room.objects.all()
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
 
-    context = { 'rooms': enumerate(rooms, start=1) }
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains=q) |
+        Q(name__icontains=q) |
+        Q(description__icontains=q)
+    )
+
+    topics = Topic.objects.all()
+
+    context = { 'rooms': enumerate(rooms, start=1), 'topics': topics }
 
     return render(request, 'base/home.html', context)
 
@@ -46,5 +55,21 @@ def updateRoom(request, pk):
 
     form = RoomForm(instance=room)
 
+    if request.method == 'POST':
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
     context = {'form': form }
     return render(request, 'base/room_form.html', context)
+
+def deleteRoom(request, pk):
+
+    room = Room.objects.get(id=pk)
+
+    if request.method == 'POST':
+        room.delete()
+        return redirect('home')
+
+    return render(request, 'base/delete.html', {'obj': room})
