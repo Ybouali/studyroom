@@ -46,7 +46,7 @@
             <hr>
             {% for user in participants %}
                 <div>
-                    <p>@{{user.username}}</p>
+                    <a href="{% url 'profile' user.id %}" >@{{user.username}}</a>
                 </div>
             {% endfor %}
         </div>
