@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
-from base.forms import RoomForm
+from base.forms import RoomForm, UserForm
 from django.contrib.auth import authenticate, login, logout
 from base.models import Room, Topic, Message
 from django.contrib.auth.decorators import login_required
@@ -193,3 +193,17 @@ def userProfile(request, pk):
 
     context = {'user': user, 'rooms': rooms, 'room_messages': room_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
+
+@login_required(login_url='login')
+def updateUser(request):
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', pk=user.id)
+
+    context = { 'form': form}
+    return render(request, 'base/update-user.html', context)
