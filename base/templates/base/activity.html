@@ -29,7 +29,7 @@
                         <a href="{% url 'profile' message.user.id %}" class="roomListRoom__author">
                             <div class="avatar avatar--small">
                                 <img
-                                    src="https://randomuser.me/api/portraits/women/11.jpg"
+                                    src="{{message.user.avatar.url}}"
                                 />
                             </div>
                             <p>
