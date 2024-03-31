@@ -15,7 +15,7 @@
                         />
                     </div>
                     <p>
-                        @{{ room_message.user }}
+                        @{{ room_message.user.username }}
                         <span>{{room_message.created | timesince}} ago</span>
                     </p>
                 </a>
@@ -40,7 +40,7 @@
             </div>
             <div class="activities__boxContent">
                 <p>
-                    replied to "<a href="{% url 'room' room_message.room.id  %}" >{{room_message.room.name}}</a>"
+                    replied to "<a href="{% url 'room' room_message.room.id  %}">{{room_message.room.name}}</a>"
                 </p>
                 <div class="activities__boxRoomContent">
                     {{room_message.body}}
