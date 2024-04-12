@@ -25,7 +25,7 @@ fonttools==4.45.1
 future==0.18.3
 gunicorn==21.2.0
 huepy==1.2.1
-idna==3.6
+idna==3.7
 imageio==2.33.0
 imageio-ffmpeg==0.4.9
 importlib-metadata==7.0.0
